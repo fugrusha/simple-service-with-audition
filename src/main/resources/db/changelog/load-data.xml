@@ -7,7 +7,7 @@
     <changeSet id="load registry" author="andrew" runOnChange="true">
         <loadUpdateData tableName="registry" file="db/data/registry.csv" separator=";" primaryKey="id">
             <column name="id" type="uuid"/>
-            <column name="usreou" type="int"/>
+            <column name="usreou" type="string"/>
             <column name="comment" type="string"/>
             <column name="quantity" type="double"/>
             <column name="nominal_value" type="double"/>

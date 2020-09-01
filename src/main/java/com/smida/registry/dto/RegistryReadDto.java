@@ -1,22 +1,16 @@
-package com.smida.registry.domain;
+package com.smida.registry.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.smida.registry.domain.RegistryStatus;
+import lombok.Data;
 
-import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.UUID;
 
-@Entity
-@Getter
-@Setter
-public class Registry {
+@Data
+public class RegistryReadDto {
 
-    @Id
-    @GeneratedValue
     private UUID id;
 
-    // max length 8
     private String usreou;
 
     private String comment;
@@ -29,6 +23,5 @@ public class Registry {
 
     private LocalDate dateOfIssue;
 
-    @Enumerated(EnumType.STRING)
     private RegistryStatus status;
 }

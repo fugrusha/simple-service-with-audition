@@ -1,12 +1,21 @@
 package com.smida.registry.service;
 
-import com.smida.registry.repository.RegistryRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import com.smida.registry.dto.*;
 
-@Service
-public class RegistryService {
+import java.util.List;
+import java.util.UUID;
 
-    @Autowired
-    private RegistryRepository registryRepository;
+public interface RegistryService {
+
+    List<RegistryReadDto> getRegistriesByFilter(RegistryFilter filter);
+
+    RegistryReadDto getRegistryById(UUID id);
+
+    RegistryReadDto createRegistry(RegistryCreateDto createDto);
+
+    RegistryReadDto updateRegistry(UUID id, RegistryPutDto putDto);
+
+    RegistryReadDto patchRegistry(UUID id, RegistryPatchDto patchDto);
+
+    RegistryReadDto deleteRegistry(UUID id);
 }

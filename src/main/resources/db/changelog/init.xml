@@ -9,12 +9,12 @@
             <column name="id" type="uuid">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="usreou" type="integer"/>
+            <column name="usreou" type="string"/>
             <column name="comment" type="varchar(255)"/>
             <column name="quantity" type="double"/>
             <column name="nominal_value" type="double"/>
             <column name="total_value" type="double"/>
-            <column name="date_of_issue" type="timestamp"/>
+            <column name="date_of_issue" type="date"/>
             <column name="status" type="varchar(30)"/>
         </createTable>
     </changeSet>
