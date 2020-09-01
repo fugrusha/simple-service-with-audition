@@ -2,8 +2,10 @@ package com.smida.registry.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.smida.registry.domain.Registry;
 import com.smida.registry.domain.RegistryStatus;
 import com.smida.registry.dto.*;
+import com.smida.registry.exception.EntityNotFoundException;
 import com.smida.registry.service.RegistryService;
 import org.assertj.core.api.Assertions;
 import org.junit.Assert;
@@ -194,6 +196,21 @@ public class RegistryControllerTest {
                 .contains(readDto.getId());
 
         Mockito.verify(registryService).getRegistriesByFilter(filter);
+    }
+
+    @Test
+    public void testGetRegistryWrongId() throws Exception {
+        UUID wrongId = UUID.randomUUID();
+
+        EntityNotFoundException ex = new EntityNotFoundException(Registry.class, wrongId);
+        Mockito.when(registryService.getRegistryById(wrongId)).thenThrow(ex);
+
+        String resultJson = mockMvc
+                .perform(get("/api/v1/registries/{id}", wrongId))
+                .andExpect(status().isNotFound())
+                .andReturn().getResponse().getContentAsString();
+
+        Assert.assertTrue(resultJson.contains(ex.getMessage()));
     }
 
     private RegistryReadDto createRegistryReadDto() {
