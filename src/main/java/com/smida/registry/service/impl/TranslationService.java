@@ -1,25 +1,20 @@
 package com.smida.registry.service.impl;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class TranslationService {
 
-//    public RegistryReadDto toRead(Registry registry) {
-//        RegistryReadDto dto = new RegistryReadDto();
-//        dto.setId(registry.getId());
-//        dto.setStatus(registry.getStatus());
-//        dto.setTotalValue(registry.getTotalValue());
-//        dto.setNominalValue(registry.getNominalValue());
-//        dto.setQuantity(registry.getQuantity());
-//        dto.setComment(registry.getComment());
-//        dto.setUsreou(registry.getUsreou());
-//        dto.setDateOfIssue(registry.getDateOfIssue());
-//        return dto;
-//    }
+    @Autowired
+    private ModelMapper mapper;
 
-    public <T> T toRead(Object srcObj, Class<T> destClass) {
-        return new ModelMapper().map(srcObj, destClass);
+    public <T> T translate(Object srcObj, Class<T> destClass) {
+        return mapper.map(srcObj, destClass);
+    }
+
+    public void map(Object srcObj, Object destObj) {
+        mapper.map(srcObj, destObj);
     }
 }

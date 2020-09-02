@@ -1,7 +1,9 @@
 package com.smida.registry.service.impl;
 
 import com.smida.registry.domain.Registry;
+import com.smida.registry.domain.RegistryStatus;
 import com.smida.registry.dto.*;
+import com.smida.registry.exception.EntityAlreadyExistsException;
 import com.smida.registry.exception.EntityNotFoundException;
 import com.smida.registry.repository.RegistryRepository;
 import com.smida.registry.service.RegistryService;
@@ -27,28 +29,59 @@ public class RegistryServiceImpl implements RegistryService {
 
     @Override
     public RegistryReadDto getRegistryById(UUID id) {
-        Registry registry = registryRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException(Registry.class, id));
-        return translationService.toRead(registry, RegistryReadDto.class);
+        Registry registry = getRegistryRequired(id);
+        return translationService.translate(registry, RegistryReadDto.class);
     }
 
     @Override
     public RegistryReadDto createRegistry(RegistryCreateDto createDto) {
-        return null;
+        if (registryRepository.findByUsreou(createDto.getUsreou()) != null) {
+            throw new EntityAlreadyExistsException(Registry.class,
+                    createDto.getUsreou());
+        }
+
+        Registry registry = translationService
+                .translate(createDto, Registry.class);
+
+        registry.setStatus(RegistryStatus.ACTIVE);
+        registry.setTotalValue(
+                createDto.getNominalValue() * createDto.getQuantity());
+
+        registry = registryRepository.save(registry);
+        return translationService.translate(registry, RegistryReadDto.class);
     }
 
     @Override
     public RegistryReadDto updateRegistry(UUID id, RegistryPutDto putDto) {
-        return null;
+        Registry registry = getRegistryRequired(id);
+
+        translationService.map(putDto, registry);
+        registry = registryRepository.save(registry);
+
+        return translationService.translate(registry, RegistryReadDto.class);
     }
 
     @Override
     public RegistryReadDto patchRegistry(UUID id, RegistryPatchDto patchDto) {
-        return null;
+        Registry registry = getRegistryRequired(id);
+
+        translationService.map(patchDto, registry);
+        registry = registryRepository.save(registry);
+
+        return translationService.translate(registry, RegistryReadDto.class);
     }
 
     @Override
     public RegistryReadDto deleteRegistry(UUID id) {
-        return null;
+        Registry registry = getRegistryRequired(id);
+        registry.setStatus(RegistryStatus.DELETED);
+
+        registry = registryRepository.save(registry);
+        return translationService.translate(registry, RegistryReadDto.class);
+    }
+
+    private Registry getRegistryRequired(UUID id) {
+        return registryRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException(Registry.class, id));
     }
 }

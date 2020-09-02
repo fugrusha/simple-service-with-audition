@@ -8,4 +8,6 @@ import java.util.UUID;
 
 @Repository
 public interface RegistryRepository extends CrudRepository<Registry, UUID> {
+
+    Registry findByUsreou(String usreou);
 }
