@@ -185,7 +185,7 @@ public class RegistryControllerTest {
 
         String resultJson = mockMvc
                 .perform(get("/api/v1/registries/")
-                .param("status", "DELETED")
+                .param("statuses", "DELETED")
                 .param("usreou", filter.getUsreou()))
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
