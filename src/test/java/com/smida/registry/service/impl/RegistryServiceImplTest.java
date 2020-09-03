@@ -2,10 +2,7 @@ package com.smida.registry.service.impl;
 
 import com.smida.registry.domain.Registry;
 import com.smida.registry.domain.RegistryStatus;
-import com.smida.registry.dto.RegistryCreateDto;
-import com.smida.registry.dto.RegistryPatchDto;
-import com.smida.registry.dto.RegistryPutDto;
-import com.smida.registry.dto.RegistryReadDto;
+import com.smida.registry.dto.*;
 import com.smida.registry.exception.EntityAlreadyExistsException;
 import com.smida.registry.exception.EntityNotFoundException;
 import com.smida.registry.repository.RegistryRepository;
@@ -21,6 +18,9 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @SpringBootTest
@@ -152,12 +152,98 @@ public class RegistryServiceImplTest {
         Assert.assertEquals(RegistryStatus.DELETED, deletedRegistry.getStatus());
     }
 
+    @Test
+    public void testGetRegistriesByEmptyFilter() {
+        Registry r1 = createRegistry();
+        Registry r2 = createRegistry();
+        Registry r3 = createRegistry();
+
+        RegistryFilter filter = new RegistryFilter();
+
+        List<RegistryReadDto> actualResult = registryService
+                .getRegistries(filter);
+
+        Assertions.assertThat(actualResult)
+                .extracting("id")
+                .containsExactlyInAnyOrder(r1.getId(), r2.getId(), r3.getId());
+    }
+
+    @Test
+    public void testGetRegistriesByStatuses() {
+        Registry r1 = createRegistry(RegistryStatus.ACTIVE, "111111");
+        Registry r2 = createRegistry(RegistryStatus.ACTIVE, "222222");
+        createRegistry(RegistryStatus.DELETED, "3333333");
+
+        Set<RegistryStatus> statuses = new HashSet<>();
+        statuses.add(RegistryStatus.ACTIVE);
+
+        RegistryFilter filter = new RegistryFilter();
+        filter.setStatuses(statuses);
+
+        List<RegistryReadDto> actualResult = registryService
+                .getRegistries(filter);
+
+        Assertions.assertThat(actualResult)
+                .extracting("id")
+                .containsExactlyInAnyOrder(r1.getId(), r2.getId());
+    }
+
+    @Test
+    public void testGetRegistriesByUsreou() {
+        Registry r1 = createRegistry(RegistryStatus.ACTIVE, "111111");
+        createRegistry(RegistryStatus.ACTIVE, "222222");
+        createRegistry(RegistryStatus.DELETED, "3333333");
+
+        RegistryFilter filter = new RegistryFilter();
+        filter.setUsreou(r1.getUsreou());
+
+        List<RegistryReadDto> actualResult = registryService
+                .getRegistries(filter);
+
+        Assertions.assertThat(actualResult)
+                .extracting("id")
+                .containsExactlyInAnyOrder(r1.getId());
+    }
+
+    @Test
+    public void testGetRegistriesByAllFilters() {
+        Registry r1 = createRegistry(RegistryStatus.ACTIVE, "111111");
+        createRegistry(RegistryStatus.ACTIVE, "222222");
+        createRegistry(RegistryStatus.DELETED, "3333333");
+
+        Set<RegistryStatus> statuses = new HashSet<>();
+        statuses.add(RegistryStatus.ACTIVE);
+
+        RegistryFilter filter = new RegistryFilter();
+        filter.setUsreou(r1.getUsreou());
+        filter.setStatuses(statuses);
+
+        List<RegistryReadDto> actualResult = registryService
+                .getRegistries(filter);
+
+        Assertions.assertThat(actualResult)
+                .extracting("id")
+                .containsExactlyInAnyOrder(r1.getId());
+    }
+
     private Registry createRegistry() {
         Registry registry = new Registry();
         registry.setDateOfIssue(LocalDate.of(2000, 10, 20));
         registry.setUsreou("123456465");
         registry.setComment("some text");
         registry.setStatus(RegistryStatus.ACTIVE);
+        registry.setQuantity(20.0);
+        registry.setNominalValue(10.0);
+        registry.setTotalValue(200.0);
+        return registryRepository.save(registry);
+    }
+
+    private Registry createRegistry(RegistryStatus status, String usreou) {
+        Registry registry = new Registry();
+        registry.setDateOfIssue(LocalDate.of(2000, 10, 20));
+        registry.setUsreou(usreou);
+        registry.setComment("some text");
+        registry.setStatus(status);
         registry.setQuantity(20.0);
         registry.setNominalValue(10.0);
         registry.setTotalValue(200.0);

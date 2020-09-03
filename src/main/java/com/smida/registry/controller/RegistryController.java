@@ -16,8 +16,8 @@ public class RegistryController {
     private RegistryService registryService;
 
     @GetMapping
-    public List<RegistryReadDto> getRegistriesByFilter(RegistryFilter filter) {
-        return registryService.getRegistriesByFilter(filter);
+    public List<RegistryReadDto> getRegistries(RegistryFilter filter) {
+        return registryService.getRegistries(filter);
     }
 
     @GetMapping("/{id}")

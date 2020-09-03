@@ -4,6 +4,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class TranslationService {
 
@@ -16,5 +19,14 @@ public class TranslationService {
 
     public void map(Object srcObj, Object destObj) {
         mapper.map(srcObj, destObj);
+    }
+
+    public <T> List<T> translateToList(
+            List<?> srcList,
+            Class<T> destClass
+    ) {
+        return srcList.stream()
+                .map(el -> translate(el, destClass))
+                .collect(Collectors.toList());
     }
 }

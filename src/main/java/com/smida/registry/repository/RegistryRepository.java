@@ -7,7 +7,8 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
 @Repository
-public interface RegistryRepository extends CrudRepository<Registry, UUID> {
+public interface RegistryRepository
+        extends CrudRepository<Registry, UUID>, RegistryRepositoryCustom {
 
     Registry findByUsreou(String usreou);
 }

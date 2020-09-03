@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public interface RegistryService {
 
-    List<RegistryReadDto> getRegistriesByFilter(RegistryFilter filter);
+    List<RegistryReadDto> getRegistries(RegistryFilter filter);
 
     RegistryReadDto getRegistryById(UUID id);
 

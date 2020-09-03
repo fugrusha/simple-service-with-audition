@@ -23,8 +23,9 @@ public class RegistryServiceImpl implements RegistryService {
     private TranslationService translationService;
 
     @Override
-    public List<RegistryReadDto> getRegistriesByFilter(RegistryFilter filter) {
-        return null;
+    public List<RegistryReadDto> getRegistries(RegistryFilter filter) {
+        List<Registry> registries = registryRepository.findByFilter(filter);
+        return translationService.translateToList(registries, RegistryReadDto.class);
     }
 
     @Override

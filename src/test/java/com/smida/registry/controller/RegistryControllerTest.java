@@ -20,9 +20,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -169,17 +167,20 @@ public class RegistryControllerTest {
     }
 
     @Test
-    public void testGetRegistriesByFilter() throws Exception {
+    public void testGetRegistries() throws Exception {
         RegistryReadDto readDto = createRegistryReadDto();
 
         List<RegistryReadDto> expectedResult = new ArrayList<>();
         expectedResult.add(readDto);
 
+        Set<RegistryStatus> statuses = new HashSet<>();
+        statuses.add(RegistryStatus.DELETED);
+
         RegistryFilter filter = new RegistryFilter();
-        filter.setStatus(RegistryStatus.DELETED);
+        filter.setStatuses(statuses);
         filter.setUsreou("123432325");
 
-        Mockito.when(registryService.getRegistriesByFilter(filter))
+        Mockito.when(registryService.getRegistries(filter))
                 .thenReturn(expectedResult);
 
         String resultJson = mockMvc
@@ -195,7 +196,7 @@ public class RegistryControllerTest {
         Assertions.assertThat(actualResult).extracting("id")
                 .contains(readDto.getId());
 
-        Mockito.verify(registryService).getRegistriesByFilter(filter);
+        Mockito.verify(registryService).getRegistries(filter);
     }
 
     @Test
