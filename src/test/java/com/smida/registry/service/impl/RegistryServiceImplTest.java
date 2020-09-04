@@ -13,13 +13,16 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -160,10 +163,10 @@ public class RegistryServiceImplTest {
 
         RegistryFilter filter = new RegistryFilter();
 
-        List<RegistryReadDto> actualResult = registryService
-                .getRegistries(filter);
+        PageResult<RegistryReadDto> actualResult = registryService
+                .getRegistries(filter, Pageable.unpaged());
 
-        Assertions.assertThat(actualResult)
+        Assertions.assertThat(actualResult.getData())
                 .extracting("id")
                 .containsExactlyInAnyOrder(r1.getId(), r2.getId(), r3.getId());
     }
@@ -180,10 +183,10 @@ public class RegistryServiceImplTest {
         RegistryFilter filter = new RegistryFilter();
         filter.setStatuses(statuses);
 
-        List<RegistryReadDto> actualResult = registryService
-                .getRegistries(filter);
+        PageResult<RegistryReadDto> actualResult = registryService
+                .getRegistries(filter, Pageable.unpaged());
 
-        Assertions.assertThat(actualResult)
+        Assertions.assertThat(actualResult.getData())
                 .extracting("id")
                 .containsExactlyInAnyOrder(r1.getId(), r2.getId());
     }
@@ -197,10 +200,10 @@ public class RegistryServiceImplTest {
         RegistryFilter filter = new RegistryFilter();
         filter.setUsreou(r1.getUsreou());
 
-        List<RegistryReadDto> actualResult = registryService
-                .getRegistries(filter);
+        PageResult<RegistryReadDto> actualResult = registryService
+                .getRegistries(filter, Pageable.unpaged());
 
-        Assertions.assertThat(actualResult)
+        Assertions.assertThat(actualResult.getData())
                 .extracting("id")
                 .containsExactlyInAnyOrder(r1.getId());
     }
@@ -218,12 +221,33 @@ public class RegistryServiceImplTest {
         filter.setUsreou(r1.getUsreou());
         filter.setStatuses(statuses);
 
-        List<RegistryReadDto> actualResult = registryService
-                .getRegistries(filter);
+        PageResult<RegistryReadDto> actualResult = registryService
+                .getRegistries(filter, Pageable.unpaged());
 
-        Assertions.assertThat(actualResult)
+        Assertions.assertThat(actualResult.getData())
                 .extracting("id")
                 .containsExactlyInAnyOrder(r1.getId());
+    }
+
+    @Test
+    public void testGetRegistriesByEmptyFilterWithPagingAndSorting() {
+        Registry r1 = createRegistry(RegistryStatus.ACTIVE, "111111");
+        Registry r2 = createRegistry(RegistryStatus.ACTIVE, "222222");
+        Registry r3 = createRegistry(RegistryStatus.DELETED, "333333");
+        createRegistry(RegistryStatus.DELETED, "444444");
+        createRegistry(RegistryStatus.DELETED, "555555");
+
+        RegistryFilter filter = new RegistryFilter();
+
+        PageRequest pageRequest = PageRequest.of(1, 2,
+                Sort.by(Sort.Direction.DESC, "usreou"));
+
+        PageResult<RegistryReadDto> actualResult = registryService
+                .getRegistries(filter, pageRequest);
+
+        Assertions.assertThat(actualResult.getData())
+                .extracting("id")
+                .isEqualTo(Arrays.asList(r3.getId(), r2.getId()));
     }
 
     private Registry createRegistry() {

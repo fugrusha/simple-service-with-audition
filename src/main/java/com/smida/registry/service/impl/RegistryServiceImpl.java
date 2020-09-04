@@ -8,9 +8,10 @@ import com.smida.registry.exception.EntityNotFoundException;
 import com.smida.registry.repository.RegistryRepository;
 import com.smida.registry.service.RegistryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -23,9 +24,12 @@ public class RegistryServiceImpl implements RegistryService {
     private TranslationService translationService;
 
     @Override
-    public List<RegistryReadDto> getRegistries(RegistryFilter filter) {
-        List<Registry> registries = registryRepository.findByFilter(filter);
-        return translationService.translateToList(registries, RegistryReadDto.class);
+    public PageResult<RegistryReadDto> getRegistries(
+            RegistryFilter filter,
+            Pageable pageable
+    ) {
+        Page<Registry> registries = registryRepository.findByFilter(filter, pageable);
+        return translationService.toPageResult(registries, RegistryReadDto.class);
     }
 
     @Override

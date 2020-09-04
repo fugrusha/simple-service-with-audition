@@ -1,13 +1,13 @@
 package com.smida.registry.service;
 
 import com.smida.registry.dto.*;
+import org.springframework.data.domain.Pageable;
 
-import java.util.List;
 import java.util.UUID;
 
 public interface RegistryService {
 
-    List<RegistryReadDto> getRegistries(RegistryFilter filter);
+    PageResult<RegistryReadDto> getRegistries(RegistryFilter filter, Pageable pageable);
 
     RegistryReadDto getRegistryById(UUID id);
 

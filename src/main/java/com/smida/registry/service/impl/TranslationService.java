@@ -1,10 +1,11 @@
 package com.smida.registry.service.impl;
 
+import com.smida.registry.dto.PageResult;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,12 +22,15 @@ public class TranslationService {
         mapper.map(srcObj, destObj);
     }
 
-    public <T> List<T> translateToList(
-            List<?> srcList,
-            Class<T> destClass
-    ) {
-        return srcList.stream()
-                .map(el -> translate(el, destClass))
-                .collect(Collectors.toList());
+    public <E, T> PageResult<T> toPageResult(Page<E> page, Class<T> dtoType) {
+        PageResult<T> result = new PageResult<>();
+        result.setPage(page.getNumber());
+        result.setPageSize(page.getSize());
+        result.setTotalElements(page.getTotalElements());
+        result.setTotalPages(page.getTotalPages());
+        result.setData(page.getContent().stream()
+                .map(e -> translate(e, dtoType))
+                .collect(Collectors.toList()));
+        return result;
     }
 }

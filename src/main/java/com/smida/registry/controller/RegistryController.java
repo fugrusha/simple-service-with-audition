@@ -3,9 +3,9 @@ package com.smida.registry.controller;
 import com.smida.registry.dto.*;
 import com.smida.registry.service.RegistryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -16,8 +16,11 @@ public class RegistryController {
     private RegistryService registryService;
 
     @GetMapping
-    public List<RegistryReadDto> getRegistries(RegistryFilter filter) {
-        return registryService.getRegistries(filter);
+    public PageResult<RegistryReadDto> getRegistries(
+            RegistryFilter filter,
+            Pageable pageable
+    ) {
+        return registryService.getRegistries(filter, pageable);
     }
 
     @GetMapping("/{id}")

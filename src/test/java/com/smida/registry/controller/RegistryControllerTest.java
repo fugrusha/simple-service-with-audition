@@ -7,14 +7,16 @@ import com.smida.registry.domain.RegistryStatus;
 import com.smida.registry.dto.*;
 import com.smida.registry.exception.EntityNotFoundException;
 import com.smida.registry.service.RegistryService;
-import org.assertj.core.api.Assertions;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -37,6 +39,9 @@ public class RegistryControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @Value("${spring.data.web.pageable.default-page-size}")
+    private int defaultPageSize;
 
     @Test
     public void testGetRegistryById() throws Exception {
@@ -170,8 +175,11 @@ public class RegistryControllerTest {
     public void testGetRegistries() throws Exception {
         RegistryReadDto readDto = createRegistryReadDto();
 
-        List<RegistryReadDto> expectedResult = new ArrayList<>();
-        expectedResult.add(readDto);
+        List<RegistryReadDto> registries = new ArrayList<>();
+        registries.add(readDto);
+
+        PageResult<RegistryReadDto> pageResult = new PageResult<>();
+        pageResult.setData(registries);
 
         Set<RegistryStatus> statuses = new HashSet<>();
         statuses.add(RegistryStatus.DELETED);
@@ -180,8 +188,9 @@ public class RegistryControllerTest {
         filter.setStatuses(statuses);
         filter.setUsreou("123432325");
 
-        Mockito.when(registryService.getRegistries(filter))
-                .thenReturn(expectedResult);
+        PageRequest pageRequest = PageRequest.of(0, defaultPageSize);
+        Mockito.when(registryService.getRegistries(filter, pageRequest))
+                .thenReturn(pageResult);
 
         String resultJson = mockMvc
                 .perform(get("/api/v1/registries/")
@@ -190,13 +199,52 @@ public class RegistryControllerTest {
                 .andExpect(status().isOk())
                 .andReturn().getResponse().getContentAsString();
 
-        List<RegistryReadDto> actualResult = objectMapper
-                .readValue(resultJson, new TypeReference<List<RegistryReadDto>>() {});
+        PageResult<RegistryReadDto> actualResult = objectMapper
+                .readValue(resultJson, new TypeReference<PageResult<RegistryReadDto>>() {});
 
-        Assertions.assertThat(actualResult).extracting("id")
-                .contains(readDto.getId());
+        Assert.assertEquals(pageResult, actualResult);
 
-        Mockito.verify(registryService).getRegistries(filter);
+        Mockito.verify(registryService).getRegistries(filter, pageRequest);
+    }
+
+    @Test
+    public void testGetRegistriesWithPagingAndSorting() throws Exception {
+        RegistryReadDto readDto = createRegistryReadDto();
+        RegistryFilter filter = new RegistryFilter();
+
+        int page = 1;
+        int size = 15;
+
+        List<RegistryReadDto> registries = new ArrayList<>();
+        registries.add(readDto);
+
+        PageResult<RegistryReadDto> pageResult = new PageResult<>();
+        pageResult.setData(registries);
+        pageResult.setPageSize(size);
+        pageResult.setPage(page);
+        pageResult.setTotalPages(4);
+        pageResult.setTotalElements(100L);
+
+        PageRequest pageRequest = PageRequest.of(page, size,
+                Sort.by(Sort.Direction.DESC, "usreou"));
+
+        Mockito.when(registryService.getRegistries(filter, pageRequest))
+                .thenReturn(pageResult);
+
+        String resultJson = mockMvc
+                .perform(get("/api/v1/registries/")
+                .param("page", Integer.toString(page))
+                .param("size", Integer.toString(size))
+                .param("sort", "usreou,desc"))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+        PageResult<RegistryReadDto> actualResult = objectMapper
+                .readValue(resultJson, new TypeReference<PageResult<RegistryReadDto>>() {});
+
+        Assert.assertEquals(pageResult, actualResult);
+
+        Mockito.verify(registryService).getRegistries(filter, pageRequest);
     }
 
     @Test
