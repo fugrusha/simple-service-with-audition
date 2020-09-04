@@ -16,7 +16,7 @@ public class Registry {
     @GeneratedValue
     private UUID id;
 
-    // max length 8
+    @Column(unique = true, nullable = false)
     private String usreou;
 
     private String comment;

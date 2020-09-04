@@ -25,9 +25,9 @@ public class RegistryRepositoryTest {
 
     @Test
     public void testFindByUsreou() {
-        Registry r1 = createRegistry("111111111");
-        createRegistry("129999999");
-        createRegistry("177777777");
+        Registry r1 = createRegistry("11111111");
+        createRegistry("12999999");
+        createRegistry("17777777");
 
         Registry actualResult = registryRepository.findByUsreou(r1.getUsreou());
 

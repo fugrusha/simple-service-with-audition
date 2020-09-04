@@ -157,9 +157,9 @@ public class RegistryServiceImplTest {
 
     @Test
     public void testGetRegistriesByEmptyFilter() {
-        Registry r1 = createRegistry();
-        Registry r2 = createRegistry();
-        Registry r3 = createRegistry();
+        Registry r1 = createRegistry(RegistryStatus.ACTIVE, "12345678");
+        Registry r2 = createRegistry(RegistryStatus.ACTIVE, "12345679");
+        Registry r3 = createRegistry(RegistryStatus.ACTIVE, "12345670");
 
         RegistryFilter filter = new RegistryFilter();
 
@@ -173,9 +173,9 @@ public class RegistryServiceImplTest {
 
     @Test
     public void testGetRegistriesByStatuses() {
-        Registry r1 = createRegistry(RegistryStatus.ACTIVE, "111111");
-        Registry r2 = createRegistry(RegistryStatus.ACTIVE, "222222");
-        createRegistry(RegistryStatus.DELETED, "3333333");
+        Registry r1 = createRegistry(RegistryStatus.ACTIVE, "1111111");
+        Registry r2 = createRegistry(RegistryStatus.ACTIVE, "2222222");
+        createRegistry(RegistryStatus.DELETED, "33333333");
 
         Set<RegistryStatus> statuses = new HashSet<>();
         statuses.add(RegistryStatus.ACTIVE);
@@ -193,9 +193,9 @@ public class RegistryServiceImplTest {
 
     @Test
     public void testGetRegistriesByUsreou() {
-        Registry r1 = createRegistry(RegistryStatus.ACTIVE, "111111");
-        createRegistry(RegistryStatus.ACTIVE, "222222");
-        createRegistry(RegistryStatus.DELETED, "3333333");
+        Registry r1 = createRegistry(RegistryStatus.ACTIVE, "1111111");
+        createRegistry(RegistryStatus.ACTIVE, "2222222");
+        createRegistry(RegistryStatus.DELETED, "33333333");
 
         RegistryFilter filter = new RegistryFilter();
         filter.setUsreou(r1.getUsreou());
@@ -210,9 +210,9 @@ public class RegistryServiceImplTest {
 
     @Test
     public void testGetRegistriesByAllFilters() {
-        Registry r1 = createRegistry(RegistryStatus.ACTIVE, "111111");
-        createRegistry(RegistryStatus.ACTIVE, "222222");
-        createRegistry(RegistryStatus.DELETED, "3333333");
+        Registry r1 = createRegistry(RegistryStatus.ACTIVE, "1111111");
+        createRegistry(RegistryStatus.ACTIVE, "2222222");
+        createRegistry(RegistryStatus.DELETED, "33333333");
 
         Set<RegistryStatus> statuses = new HashSet<>();
         statuses.add(RegistryStatus.ACTIVE);
@@ -231,11 +231,11 @@ public class RegistryServiceImplTest {
 
     @Test
     public void testGetRegistriesByEmptyFilterWithPagingAndSorting() {
-        Registry r1 = createRegistry(RegistryStatus.ACTIVE, "111111");
-        Registry r2 = createRegistry(RegistryStatus.ACTIVE, "222222");
-        Registry r3 = createRegistry(RegistryStatus.DELETED, "333333");
-        createRegistry(RegistryStatus.DELETED, "444444");
-        createRegistry(RegistryStatus.DELETED, "555555");
+        Registry r1 = createRegistry(RegistryStatus.ACTIVE, "11111111");
+        Registry r2 = createRegistry(RegistryStatus.ACTIVE, "22222222");
+        Registry r3 = createRegistry(RegistryStatus.DELETED, "33333333");
+        createRegistry(RegistryStatus.DELETED, "44444444");
+        createRegistry(RegistryStatus.DELETED, "55555555");
 
         RegistryFilter filter = new RegistryFilter();
 
@@ -253,7 +253,7 @@ public class RegistryServiceImplTest {
     private Registry createRegistry() {
         Registry registry = new Registry();
         registry.setDateOfIssue(LocalDate.of(2000, 10, 20));
-        registry.setUsreou("123456465");
+        registry.setUsreou("12345678");
         registry.setComment("some text");
         registry.setStatus(RegistryStatus.ACTIVE);
         registry.setQuantity(20.0);

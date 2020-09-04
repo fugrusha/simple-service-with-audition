@@ -9,7 +9,9 @@
             <column name="id" type="uuid">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="usreou" type="varchar(100)"/>
+            <column name="usreou" type="varchar(8)">
+                <constraints nullable="false" unique="true"/>
+            </column>
             <column name="comment" type="varchar(255)"/>
             <column name="quantity" type="double"/>
             <column name="nominal_value" type="double"/>

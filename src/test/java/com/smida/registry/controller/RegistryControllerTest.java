@@ -6,10 +6,12 @@ import com.smida.registry.domain.Registry;
 import com.smida.registry.domain.RegistryStatus;
 import com.smida.registry.dto.*;
 import com.smida.registry.exception.EntityNotFoundException;
+import com.smida.registry.exception.handler.ErrorInfo;
 import com.smida.registry.service.RegistryService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -71,7 +73,7 @@ public class RegistryControllerTest {
         createDto.setComment("new comment");
         createDto.setDateOfIssue(LocalDate.of(1990, 2, 12));
         createDto.setNominalValue(20.0);
-        createDto.setUsreou("1546545");
+        createDto.setUsreou("15465445");
         createDto.setQuantity(5.0);
 
         Mockito.when(registryService.createRegistry(createDto))
@@ -100,7 +102,7 @@ public class RegistryControllerTest {
         putDto.setComment("new comment");
         putDto.setDateOfIssue(LocalDate.of(1990, 2, 12));
         putDto.setNominalValue(20.0);
-        putDto.setUsreou("1546545");
+        putDto.setUsreou("15464545");
         putDto.setQuantity(5.0);
 
         Mockito.when(registryService.updateRegistry(readDto.getId(), putDto))
@@ -129,7 +131,7 @@ public class RegistryControllerTest {
         patchDto.setComment("new comment");
         patchDto.setDateOfIssue(LocalDate.of(1990, 2, 12));
         patchDto.setNominalValue(20.0);
-        patchDto.setUsreou("1546545");
+        patchDto.setUsreou("15465445");
         patchDto.setQuantity(5.0);
 
         Mockito.when(registryService.patchRegistry(readDto.getId(), patchDto))
@@ -186,7 +188,7 @@ public class RegistryControllerTest {
 
         RegistryFilter filter = new RegistryFilter();
         filter.setStatuses(statuses);
-        filter.setUsreou("123432325");
+        filter.setUsreou("12343235");
 
         PageRequest pageRequest = PageRequest.of(0, defaultPageSize);
         Mockito.when(registryService.getRegistries(filter, pageRequest))
@@ -260,6 +262,22 @@ public class RegistryControllerTest {
                 .andReturn().getResponse().getContentAsString();
 
         Assert.assertTrue(resultJson.contains(ex.getMessage()));
+    }
+
+    @Test
+    public void testCreateRegistryValidationFailed() throws Exception {
+        RegistryCreateDto createDto = new RegistryCreateDto();
+
+        String resultJson = mockMvc
+                .perform(post("/api/v1/registries/")
+                .content(objectMapper.writeValueAsString(createDto))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andReturn().getResponse().getContentAsString();
+
+        ErrorInfo error = objectMapper.readValue(resultJson, ErrorInfo.class);
+        Mockito.verify(registryService, Mockito.never()).createRegistry(
+                ArgumentMatchers.any());
     }
 
     private RegistryReadDto createRegistryReadDto() {

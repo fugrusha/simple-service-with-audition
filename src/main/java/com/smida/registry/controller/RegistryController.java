@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.UUID;
 
 @RestController
@@ -17,7 +18,7 @@ public class RegistryController {
 
     @GetMapping
     public PageResult<RegistryReadDto> getRegistries(
-            RegistryFilter filter,
+            @Valid RegistryFilter filter,
             Pageable pageable
     ) {
         return registryService.getRegistries(filter, pageable);
@@ -29,14 +30,15 @@ public class RegistryController {
     }
 
     @PostMapping
-    public RegistryReadDto createRegistry(@RequestBody RegistryCreateDto createDto) {
+    public RegistryReadDto createRegistry(
+            @RequestBody @Valid RegistryCreateDto createDto) {
         return registryService.createRegistry(createDto);
     }
 
     @PutMapping("/{id}")
     public RegistryReadDto updateRegistry(
             @PathVariable UUID id,
-            @RequestBody RegistryPutDto putDto
+            @RequestBody @Valid RegistryPutDto putDto
     ) {
         return registryService.updateRegistry(id, putDto);
     }
@@ -44,7 +46,7 @@ public class RegistryController {
     @PatchMapping("/{id}")
     public RegistryReadDto patchRegistry(
             @PathVariable UUID id,
-            @RequestBody RegistryPatchDto patchDto
+            @RequestBody @Valid RegistryPatchDto patchDto
     ) {
         return registryService.patchRegistry(id, patchDto);
     }
