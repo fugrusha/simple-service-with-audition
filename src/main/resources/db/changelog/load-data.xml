@@ -4,17 +4,6 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <changeSet id="load registry" author="andrew" runOnChange="true">
-        <loadUpdateData tableName="registry" file="db/data/registry.csv" separator=";" primaryKey="id">
-            <column name="id" type="uuid"/>
-            <column name="usreou" type="string"/>
-            <column name="comment" type="string"/>
-            <column name="quantity" type="double"/>
-            <column name="nominal_value" type="double"/>
-            <column name="total_value" type="double"/>
-            <column name="date_of_issue" type="timestamp"/>
-            <column name="status" type="string"/>
-        </loadUpdateData>
-    </changeSet>
+    <include file="db/data/insert-registries.json" />
 
 </databaseChangeLog>

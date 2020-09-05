@@ -1,0 +1,304 @@
+{
+  "databaseChangeLog": [
+    {
+      "preConditions": [
+        {
+          "dbms": {
+            "type": "h2"
+          },
+          "runningAs": {
+            "username": "SA"
+          }
+        }
+      ]
+    },
+    {
+      "changeSet": {
+        "id": "insert-registries",
+        "author": "andrew",
+        "changes": [
+          {
+            "insert": {
+              "schemaName": "public",
+              "tableName": "registry",
+              "columns": [
+                {
+                  "column": {
+                    "name": "id",
+                    "value": "315dae3c-1e7f-4909-b422-8022326371e2"
+                  }
+                },
+                {
+                  "column": {
+                    "name": "usreou",
+                    "value": "12345678"
+                  }
+                },
+                {
+                  "column": {
+                    "name": "comment",
+                    "value": "some text"
+                  }
+                },
+                {
+                  "column": {
+                    "name": "quantity",
+                    "value": 10.0
+                  }
+                },
+                {
+                  "column": {
+                    "name": "nominal_value",
+                    "value": 20.0
+                  }
+                },
+                {
+                  "column": {
+                    "name": "total_value",
+                    "value": 200.0
+                  }
+                },
+                {
+                  "column": {
+                    "name": "date_of_issue",
+                    "value": "2007-08-09"
+                  }
+                },
+                {
+                  "column": {
+                    "name": "status",
+                    "value": "ACTIVE"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "insert": {
+              "schemaName": "public",
+              "tableName": "registry",
+              "columns": [
+                {
+                  "column": {
+                    "name": "id",
+                    "value": "72f80065-8380-4db7-9ea2-4d2bbabc132c"
+                  }
+                },
+                {
+                  "column": {
+                    "name": "usreou",
+                    "value": "12345673"
+                  }
+                },
+                {
+                  "column": {
+                    "name": "comment",
+                    "value": "some text"
+                  }
+                },
+                {
+                  "column": {
+                    "name": "quantity",
+                    "value": 10.0
+                  }
+                },
+                {
+                  "column": {
+                    "name": "nominal_value",
+                    "value": 20.0
+                  }
+                },
+                {
+                  "column": {
+                    "name": "total_value",
+                    "value": 200.0
+                  }
+                },
+                {
+                  "column": {
+                    "name": "date_of_issue",
+                    "value": "2009-12-12"
+                  }
+                },
+                {
+                  "column": {
+                    "name": "status",
+                    "value": "ACTIVE"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "insert": {
+              "schemaName": "public",
+              "tableName": "registry",
+              "columns": [
+                {
+                  "column": {
+                    "name": "id",
+                    "value": "65dd4d2f-daab-440b-a778-aad848301905"
+                  }
+                },
+                {
+                  "column": {
+                    "name": "usreou",
+                    "value": "12345672"
+                  }
+                },
+                {
+                  "column": {
+                    "name": "comment",
+                    "value": "some text"
+                  }
+                },
+                {
+                  "column": {
+                    "name": "quantity",
+                    "value": 10.0
+                  }
+                },
+                {
+                  "column": {
+                    "name": "nominal_value",
+                    "value": 20.0
+                  }
+                },
+                {
+                  "column": {
+                    "name": "total_value",
+                    "value": 200.0
+                  }
+                },
+                {
+                  "column": {
+                    "name": "date_of_issue",
+                    "value": "2011-02-03"
+                  }
+                },
+                {
+                  "column": {
+                    "name": "status",
+                    "value": "DELETED"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "insert": {
+              "schemaName": "public",
+              "tableName": "registry",
+              "columns": [
+                {
+                  "column": {
+                    "name": "id",
+                    "value": "02765190-34b4-4a52-900a-d5f71d56726d"
+                  }
+                },
+                {
+                  "column": {
+                    "name": "usreou",
+                    "value": "12345671"
+                  }
+                },
+                {
+                  "column": {
+                    "name": "comment",
+                    "value": "some text"
+                  }
+                },
+                {
+                  "column": {
+                    "name": "quantity",
+                    "value": 10.0
+                  }
+                },
+                {
+                  "column": {
+                    "name": "nominal_value",
+                    "value": 20.0
+                  }
+                },
+                {
+                  "column": {
+                    "name": "total_value",
+                    "value": 200.0
+                  }
+                },
+                {
+                  "column": {
+                    "name": "date_of_issue",
+                    "value": "2012-10-10"
+                  }
+                },
+                {
+                  "column": {
+                    "name": "status",
+                    "value": "ACTIVE"
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "insert": {
+              "schemaName": "public",
+              "tableName": "registry",
+              "columns": [
+                {
+                  "column": {
+                    "name": "id",
+                    "value": "6c62a2fb-51af-4ff6-8990-df1bec64ee4d"
+                  }
+                },
+                {
+                  "column": {
+                    "name": "usreou",
+                    "value": "12345670"
+                  }
+                },
+                {
+                  "column": {
+                    "name": "comment",
+                    "value": "some text"
+                  }
+                },
+                {
+                  "column": {
+                    "name": "quantity",
+                    "value": 10.0
+                  }
+                },
+                {
+                  "column": {
+                    "name": "nominal_value",
+                    "value": 30.0
+                  }
+                },
+                {
+                  "column": {
+                    "name": "total_value",
+                    "value": 300.0
+                  }
+                },
+                {
+                  "column": {
+                    "name": "date_of_issue",
+                    "value": "2010-08-10"
+                  }
+                },
+                {
+                  "column": {
+                    "name": "status",
+                    "value": "DELETED"
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
