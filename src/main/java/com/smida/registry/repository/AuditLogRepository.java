@@ -13,5 +13,5 @@ public interface AuditLogRepository extends CrudRepository<AuditLog, UUID> {
 
     Page<AuditLog> findByUsreou(String usreou, Pageable pageable);
 
-    Page<AuditLog> findByPersistedObjectId(UUID objectId, Pageable pageable);
+    Page<AuditLog> findByPersistedObjectId(String objectId, Pageable pageable);
 }
