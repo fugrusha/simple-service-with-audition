@@ -30,7 +30,9 @@ import java.util.UUID;
 @RunWith(SpringRunner.class)
 @ActiveProfiles("test")
 @Sql(statements = {
-        "delete from registry" }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+        "delete from registry",
+        "delete from audit_log"},
+        executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 public class RegistryServiceImplTest {
 
     @Autowired

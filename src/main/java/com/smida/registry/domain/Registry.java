@@ -1,5 +1,6 @@
 package com.smida.registry.domain;
 
+import com.smida.registry.interceptor.Auditable;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,7 +11,7 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
-public class Registry {
+public class Registry implements Auditable {
 
     @Id
     @GeneratedValue

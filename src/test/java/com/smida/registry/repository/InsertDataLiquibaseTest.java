@@ -13,7 +13,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 @DataJpaTest
 @RunWith(SpringRunner.class)
 @ActiveProfiles("test")
-@Sql(statements = {"delete from registry"},
+@Sql(statements = {
+        "delete from registry",
+        "delete from audit_log"},
         executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 @TestPropertySource(properties = "spring.liquibase.change-log=classpath:db/changelog/db.changelog-master.xml")
 public class InsertDataLiquibaseTest {

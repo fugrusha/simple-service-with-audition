@@ -16,7 +16,9 @@ import java.time.LocalDate;
 @DataJpaTest
 @RunWith(SpringRunner.class)
 @ActiveProfiles("test")
-@Sql(statements = {"delete from registry"},
+@Sql(statements = {
+        "delete from registry",
+        "delete from audit_log"},
         executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 public class RegistryRepositoryTest {
 

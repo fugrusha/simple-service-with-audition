@@ -21,4 +21,20 @@
         </createTable>
     </changeSet>
 
+    <changeSet id="create audit_log" author="andrew">
+        <createTable tableName="audit_log">
+            <column name="id" type="uuid">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="usreou" type="varchar(8)"/>
+            <column name="class_name" type="varchar(255)"/>
+            <column name="persisted_object_id" type="varchar(255)"/>
+            <column name="event_name" type="varchar(255)"/>
+            <column name="property_name" type="varchar(255)"/>
+            <column name="old_value" type="varchar(255)"/>
+            <column name="new_value" type="varchar(255)"/>
+            <column name="timestamp" type="timestamp"/>
+        </createTable>
+    </changeSet>
+
 </databaseChangeLog>
